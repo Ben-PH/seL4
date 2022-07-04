@@ -6,7 +6,7 @@
 
 #include <object/reply.h>
 
-void reply_push(tcb_t *tcb_caller, tcb_t *tcb_callee, reply_t *reply, bool_t canDonate)
+void reply_push(tcb_t *tcb_caller, tcb_t *tcb_callee, reply_t *reply, bool_t canDonate, bool_t canGrant)
 {
     sched_context_t *sc_donated = tcb_caller->tcbSchedContext;
 
@@ -27,6 +27,7 @@ void reply_push(tcb_t *tcb_caller, tcb_t *tcb_callee, reply_t *reply, bool_t can
 
     /* link caller and reply */
     reply->replyTCB = tcb_caller;
+    reply->canGrant = canGrant;
     thread_state_ptr_set_replyObject(&tcb_caller->tcbState, REPLY_REF(reply));
     setThreadState(tcb_caller, ThreadState_BlockedOnReply);
 

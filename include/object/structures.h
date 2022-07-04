@@ -396,6 +396,13 @@ struct reply {
      * (the last caller before the server) or another reply object. 0 if no scheduling
      * context was passed along the call chain */
     call_stack_t replyNext;
+
+    /* If replyTCB links to a thread that is a caller blocked on this reply object, then canGrant
+     * indicates whether there was a grant right on the receiver's endpoint cap when the receiver
+     * called receiveIPC to receive the call. It is not meaningful otherwise. In order to grant
+     * through a reply, the replier must have both a grant right on the reply cap, and a grant right
+     * on the endpoint cap used to receive the call. */
+    bool_t canGrant;
 };
 #endif
 
